@@ -1,3 +1,27 @@
+### v1.5
+
+* New: Optional - Show bundle name in search results and/or use Colour to
+  indicate bundle - https://github.com/lintalist/lintalist/issues/18
+  uses Class_LV_Colors by just me https://github.com/AHK-just-me/Class_LV_Colors
+  Setting: DisplayBundle
+  Caveat: using colours might cause the Search GUI to freeze or to become
+  unresponsive should this happen simply avoid using a DisplayBundle 
+  setting > 1
+* New: Optional - Set font (typeface) and font size for search results
+  and preview - https://github.com/lintalist/lintalist/issues/18
+  Setting: Font and FontSize
+* New: Bundle editor revised (used to be 2nd tab in editor) - editing bundle
+  properties now independent of snippet. Delete a bundle using the editor.
+  https://github.com/lintalist/lintalist/issues/19
+* Fix: Calendar plugin - added cancel option
+* Fix: Update helper: Revised ZIP routine, Zip Class replaced with new version
+  https://github.com/cocobelgica/AutoHotkey-ZipFile
+* Change: refactored ReadIni() code.
+* Change: in EditorMenuHandler now using Control, EditPaste for sending Plugin
+  to controls in Snippet editor (part 1 & part 2) - faster and more reliable.
+* Doc: More information about the various usages of part2 in a snippet.
+  Discussion at https://github.com/lintalist/lintalist/issues/20  
+
 ### Changelog v1.4.1
 
 * Fix: ShowPreview no longer worked reliabley due to "SetKeyDelay, -1" - removed it
