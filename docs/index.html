@@ -97,7 +97,7 @@ As noted above Lintalist allows you to store and (incrementally) <b>search</b> a
 
 The texts, shortcuts, abbreviations and scripts are called <b>snippets</b> and they are stored in a so called <b>bundle</b>. A bundle is a simple text file, making it easy to understand, maintain and exchange bundles between users.
 
-The bundles are <b>context sensitive</b>: based on the <b>(partial) window title</b> of the currently active program it will try to load one or more matching bundles, this will allow you to use the same shortcuts and shorthands in different applications and files making it even more flexible. You don't have to use or remember any shortcuts or shorthands because you can <b>search your bundles</b> at any time by opening the search window. Think of it as text-expander which will save you countless keystrokes and has a number of additional features:  hotkeys, full text search, plugins and scripts.
+The bundles are <b>context sensitive</b>: based on the <b>(partial) window title</b> of the currently active program it will try to load one or more matching bundles, this will allow you to use the same shortcuts and shorthands in different applications and files making it even more flexible. You don't have to use or remember any shortcuts or shorthands because you can <b>search your bundles</b> at any time by opening the search window. Think of it as text-expander which will save you countless keystrokes and has a number of additional features: hotkeys, full text search, plugins and scripts.
 
 <span class='tip'>Bundles and Snippets can be edited using the <a href='#Editing'>Lintalist Bundle &amp; Snippet Editors</a> OR in your preferred text editor.</span>
 For example: If you are editing a HTML file, Lintalist could use both a HTML and CSS bundle, but if you are editing a CSS file only the CSS Bundle is loaded. So, in your HTML file the shortcut <strong>ctrl+b</strong> can insert <strong>&lt;strong&gt;&lt;/strong&gt;</strong> at the caret position (or wrap the tag around the selected text) and while editing your CSS file the shortcut <strong>ctrl+b</strong> can insert <strong>font-style: bold;</strong> at the caret position. If a shortcut is found in multiple active bundles a pop-up-menu will appear so you can choose which snippet & bundle you prefer.
@@ -583,6 +583,11 @@ Basic example <code>[[Choice=Red|Green|Blue]]</code> inserts the selected colour
 Basic example <code>[[Counter=InvoiceNumber]]</code> --> increment by one and insert value of InvoiceNumber.
 By default it will increment the counter by one, you can change that by specifying the Value.
 <code>[[Counter=InvoiceNumber|5]]</code> Add 5 and insert.
+
+<b>Tip</b>: if you want to use the same counter multiple times in a snippet without incrementation simply "Add zero" (<b>|0</b>) for the second and subsequent instances. 
+
+<code>text &hellip; [[counter=cName]] &hellip; text &hellip; 2nd instance [[counter=cName<b>|0</b>]] with same value</code>
+
 These counters are saved between sessions and stored in settings.ini
 You can manage these counters (add, edit, delete) via the tray menu option: Manage counters.
 </td></tr>
@@ -718,9 +723,9 @@ You can now insert your address in your snippets/bundles by using <code>[[Var=My
 
 So if your address changes you only have to update the Address variable and all your bundles will be up to date. This makes it also easier to share a bundle with other users as they don't have to update your bundle by editing all your address entries, they can simply add the Address variable to their local bundle. 
 
-<b>Local bundle editor</b>
+<b>Manage local variables (Local bundle editor)</b>
 
-You can edit your local bundle via the editor you can access via Tray menu. 
+You can edit your local variables using the Local bundle editor. You can access the editor via the Tray menu or via the Edit menu in the Search gui (Manage local variables)
 
 <span class='small'>Local bundle editor</span>
 <img src='img/lintalist-local-bundle-editor.png' alt='Local bundle editor' border='0'  style='max-width:100%;' />

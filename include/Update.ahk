@@ -20,10 +20,14 @@
 DetectHiddenWindows, On
 SetTitleMatchMode, 2
 
-MsgBox, 48, Disabled, This is a beta-release of Lintalist`nChecking for updates has been disabled.
-ExitApp
-
 SetWorkingDir, %A_ScriptDir%\..
+
+IniRead, beta, version.ini, settings, beta
+if (beta=1)
+	{
+	 MsgBox, 48, Disabled, This is a beta-release of Lintalist`nChecking for updates has been disabled.
+	 ExitApp
+	}
 
 TrayTip, Checking ..., Checking for updates
 

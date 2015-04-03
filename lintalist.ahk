@@ -60,7 +60,8 @@ Menu, Tray, Add, &Configuration,     TrayMenuHandler
 Menu, Tray, Add,
 Menu, Tray, Add, Check for updates,  TrayMenuHandler
 Menu, Tray, Add,
-Menu, Tray, Add, &Edit Local Bundle, TrayMenuHandler
+Menu, Tray, Add, &Manage Bundles,    TrayMenuHandler
+Menu, Tray, Add, &Manage local variables, EditMenuHandler
 Menu, Tray, Add, &Manage counters,   TrayMenuHandler
 Menu, Tray, Add,
 Menu, Tray, Add, &Load All Bundles,  MenuHandler
@@ -195,7 +196,7 @@ Return
 GuiStart: ; build GUI
 If WinActive("Select bundle") or WinActive("Append snippet to bundle") ; TODO replace by HOTKEY On,Off command
 		Return
-If (ActiveWindowTitle = "Lintalist bundle editor") or (ActiveWindowTitle = "Lintalist snippet editor") ; TODO replace by HOTKEY On,Off command
+If (WinActive("Lintalist bundle editor") or WinActive("Lintalist snippet editor")) ; TODO replace by HOTKEY On,Off command
 		Return
 LastText = fadsfSDFDFasdFdfsadfsadFDSFDf
 If !WinActive(AppWindow)
@@ -642,7 +643,7 @@ UpdateLVColWidth()
 	 global
 	 local c4w
 	 factor:=225
-	 If (DisplayBundle = 0) ; Bundle name, 6th column
+	 If DisplayBundle in 0,2 ; Bundle name, 6th column setting 0 & 2 hide column
 		{
 		 LV_ModifyCol(6,0)
 		 factor:=155
@@ -897,8 +898,11 @@ Return
 F10::
 EditF10:
 EditMode = BundleProperties
-Gui, 81:+Owner1
-Gui, 1:+Disabled
+If WinExist(AppWindow)
+	{
+	 Gui, 81:+Owner1
+	 Gui, 1:+Disabled
+	} 
 Gosub, BundlePropertiesEditor
 Return
 
@@ -1182,7 +1186,7 @@ Else If (A_ThisMenuItem = "Quick Start Guide")
 	Gosub, QuickStartGuideMenu
 Else If (A_ThisMenuItem = "Check for updates")
 	Run, %A_AhkPath% %A_ScriptDir%\include\update.ahk
-Else If (A_ThisMenuItem = "&Edit Local Bundle")
+Else If (A_ThisMenuItem = "&Manage local variables")
 		{
 		 RunWait, %A_AhkPath% include\localbundleeditor.ahk
 		 MsgBox, 36, Restart?, In order for any changes to take effect you must reload.`nOK to restart? ; 4+32 = 36
@@ -1256,8 +1260,8 @@ Else If (A_ThisMenuItem = "&New Snippet`tF7")
 	Gosub, EditF7
 Else If (A_ThisMenuItem = "&Remove Snippet`tF8")
 	Gosub, EditF8
-Else If (A_ThisMenuItem = "&Bundle properties`tF10")
-	Gosub, EditF10
+Else If (A_ThisMenuItem = "&Manage Bundles") or (A_ThisMenuItem = "&Manage Bundles`tF10")
+	 Gosub, EditF10
 Else If (A_ThisMenuItem = "&Help")
 	Run, docs\index.html
 Return
@@ -1556,12 +1560,11 @@ Menu, Edit, Add, &Move Snippet`tF6,  EditMenuHandler
 Menu, Edit, Add, &New Snippet`tF7,   EditMenuHandler
 Menu, Edit, Add, &Remove Snippet`tF8,EditMenuHandler
 Menu, Edit, Add,
-Menu, Edit, Add, &Bundle properties`tF10,   EditMenuHandler
+Menu, Edit, Add, &Manage Bundles`tF10, EditMenuHandler
+Menu, Edit, Add, &Manage local variables, TrayMenuHandler
+Menu, Edit, Add, &Manage counters,   TrayMenuHandler
 Menu, Edit, Add,
 Menu, Edit, Add, &Configuration,     TrayMenuHandler
-Menu, Edit, Add,
-Menu, Edit, Add, &Edit Local Bundle, TrayMenuHandler
-Menu, Edit, Add, &Manage counters,   TrayMenuHandler
 Menu, Edit, Add,
 Menu, Edit, Add, &Help,              TrayMenuHandler
 Menu, MenuBar, Add, &Edit, :Edit
@@ -1630,8 +1633,10 @@ Menu, Plugins, Add, Insert [[C=]]       , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Calc=]]    , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Calendar=]], EditorMenuHandler
 Menu, Plugins, Add, Insert [[Choice=]]  , EditorMenuHandler
-Menu, Plugins, Add, Insert [[DateTime=]], EditorMenuHandler
-;Menu, Plugins, Add, Insert [[Enc=]]     , EditorMenuHandler
+Menu, DateTime, Add, Insert [[DateTime=dd yyyy MM]]`tday year Month, EditorMenuHandler
+Menu, Plugins, Add, Insert [[DateTime=]], :DateTime
+
+Menu, Plugins, Add, Insert [[Enc=]]     , EditorMenuHandler
 Menu, Plugins, Add, Insert [[File=]]    , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Input=]]   , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Snippet=]] , EditorMenuHandler
