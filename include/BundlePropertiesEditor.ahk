@@ -147,7 +147,13 @@ If (SelectedListboxBundle = "")
 		}
 	 NewBundleFileName .= ".txt" ; make sure *.txt was added otherwise it won't load at next startup
 	 StringReplace, NewBundleFileName, NewBundleFileName, .txt.txt, .txt, all
-	 File .= A_ScriptDir "\bundles\" NewBundleFileName
+	 File := A_ScriptDir "\bundles\" NewBundleFileName
+	 IfExist, %File%
+		{
+		 MsgBox, Warning:`n%File%`n`nis already present in the bundle folder.`nEnter a new name.
+		 Return
+		}
+	 
 FileAppend, 
 (
 BundleFormat: 1

@@ -69,6 +69,7 @@ INISetup:={ AlwaysLoadBundles:     {default:"",find:"bundles\"}
 			, AlwaysUpdateBundles: {default:"0"}
 			, AutoExecuteOne:      {default:"0"}
 			, SingleClickSends:    {default:"0"}
+			, OmniChar:            {default:"@"}
 			, DisplayBundle:       {default:"0"}
 			, Font:                {default:"Arial"}
             , FontSize:            {default:"10"} }

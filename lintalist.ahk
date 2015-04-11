@@ -112,10 +112,10 @@ if 0 > 0  ; check cl parameters
 ReadIni()
 
 if cl_Bundle
- 	{
+	{
 	 LastBundle:=cl_Bundle
 	 Lock:=1
- 	}	
+	}
 
 Gosub, CheckShortcuts
 
@@ -287,11 +287,16 @@ GuiControl,1: , Edit2, %A_Space% ; fix preview if no more snippets e.g. ghosting
 ; setup imagelist and define icons
 #Include %A_ScriptDir%\include\ImageList.ahk
 
-LastText := CurrText
+If (SubStr(CurrText,1,1) = OmniChar)
+	SearchBundles:=Group
+Else 
+	SearchBundles:=Load
+
+LastText:=CurrText
 GuiControlGet, Case, , Button2
 ShowPreviewToggle=1
 
-Loop, parse, Load, CSV
+Loop, parse, SearchBundles, CSV
 	{
 	 If (A_TickCount - StartTime > 250)
 		ControlGetText, CurrText, Edit1, %AppWindow%
@@ -302,13 +307,14 @@ Loop, parse, Load, CSV
 	 Max:=Snippet[Bundle].MaxIndex()
 	 Loop,% Max ; %
 		{
+		 SearchText:=LTrim(CurrText,OmniChar)
 		 match=0
 		 SearchThis1:=Snippet[Bundle,A_Index,1] ; part '1' (enter)
 		 SearchThis2:=Snippet[Bundle,A_Index,2] ; part '2' (shift-enter)
 		 SearchThis3:=Snippet[Bundle,A_Index,4] ; shorthand
 		 If (SearchMethod = 1) ; normal
 			{
-			 If (InStr(SearchThis1,CurrText,Case) > 0) or (InStr(SearchThis2,CurrText,Case) > 0) or (InStr(SearchThis3,CurrText,Case) > 0)
+			 If (InStr(SearchThis1,SearchText,Case) > 0) or (InStr(SearchThis2,SearchText,Case) > 0) or (InStr(SearchThis3,SearchText,Case) > 0)
 				{
 				 Match++
 				}
@@ -318,7 +324,7 @@ Loop, parse, Load, CSV
 			{
 			 Found = 0
 			 Words = 0
-			 Loop, parse, CurrText, %A_Space%
+			 Loop, parse, SearchText, %A_Space%
 				{
 				 If (InStr(SearchThis1,A_LoopField,Case) > 0) or (InStr(SearchThis2,A_LoopField,Case) > 0) or (InStr(SearchThis3,A_LoopField,Case) > 0)
 					Found++
@@ -333,9 +339,9 @@ Loop, parse, Load, CSV
 		 If (SearchMethod = 3) ; regex
 			{
 			 If (Case = 0)     ; case insensitive, add auto i) option
-				SearchRe := "i)" . CurrText
+				SearchRe := "i)" . SearchText
 			 Else
-				SearchRe := CurrText
+				SearchRe := SearchText
 			 If (RegExMatch(SearchThis1, SearchRe) > 0) or (RegExMatch(SearchThis2, SearchRe) > 0) or (RegExMatch(SearchThis3, SearchRe) > 0)
 				{
 				 Match++
@@ -344,7 +350,7 @@ Loop, parse, Load, CSV
 
 		 If (SearchMethod = 4) ; magic (=regex)
 			{
-			 SearchRe := RegExReplace(CurrText,"(.)","$1.*")
+			 SearchRe := RegExReplace(SearchText,"(.)","$1.*")
 			 If (Case = 0)     ; case insensitive, add auto i) option
 				SearchRe := "i)" . SearchRe
 			 If (RegExMatch(SearchThis1, SearchRe) > 0) or (RegExMatch(SearchThis2, SearchRe) > 0) or (RegExMatch(SearchThis3, SearchRe) > 0)
@@ -804,6 +810,11 @@ Return
 
 F4:: ; edit snippet
 EditF4:
+If WinExist("Lintalist snippet editor")
+	{
+	 WinActivate, Lintalist snippet editor
+	 return
+	} 
 EditMode = EditSnippet
 Gui, 1:Submit, NoHide
 ControlFocus, SysListView321, %AppWindow%
@@ -898,6 +909,11 @@ Return
 F10::
 EditF10:
 EditMode = BundleProperties
+If WinExist("Lintalist bundle editor")
+	{
+	 WinActivate, Lintalist bundle editor
+	 return
+	} 
 If WinExist(AppWindow)
 	{
 	 Gui, 81:+Owner1
@@ -1633,9 +1649,7 @@ Menu, Plugins, Add, Insert [[C=]]       , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Calc=]]    , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Calendar=]], EditorMenuHandler
 Menu, Plugins, Add, Insert [[Choice=]]  , EditorMenuHandler
-Menu, DateTime, Add, Insert [[DateTime=dd yyyy MM]]`tday year Month, EditorMenuHandler
-Menu, Plugins, Add, Insert [[DateTime=]], :DateTime
-
+Menu, Plugins, Add, Insert [[DateTime=]], EditorMenuHandler
 Menu, Plugins, Add, Insert [[Enc=]]     , EditorMenuHandler
 Menu, Plugins, Add, Insert [[File=]]    , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Input=]]   , EditorMenuHandler
