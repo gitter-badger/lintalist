@@ -113,6 +113,9 @@ INISetup:={ AlwaysLoadBundles:     {default:"",find:"bundles\"}
 		Else
 			ShowGrid = Grid
 
+		If (OmniChar = "")
+			OmniChar:=Chr(7) ; just assign a character which you won't type
+
 	 ReadCountersIni()
 	}                         
 

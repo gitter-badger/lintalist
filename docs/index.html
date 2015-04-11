@@ -226,6 +226,32 @@ A new line is replaced by <b>\n</b> and a tab by <b>\t</b> and it will search <b
 <span style='color:#c00;'>&lt;techtalk&gt;</span> If the <b>Case check-box</b> is not checked your searches will be case-insensitive. When using the RegEx search method the "i)" option for the regular expression will automatically be inserted before each snippet is searched. This may lead to unexpected results if you pass on other options for your RegEx search. 
 
 Example: The case-insensitive RegEx 'se\w*g' it is actually using the following regular expression 'i)se\w*g' while searching. This is done for convenience (otherwise you would have to type i) every time you wanted to do a case-insensitive search (RegEx is by default case sensitive). If you want to pass on extra options it is best to turn Case sensitive ON and add the options you need as described here <a href='http://ahkscript.org/docs/commands/RegExMatch.htm#Options'>http://ahkscript.org/docs/commands/RegExMatch.htm#Options</a>. This behaviour may change in future version of Lintalist. <span style='color:#c00;'>&lt;/techtalk&gt;</span>
+
+<h3 id='Omni'><em>Omni</em>search (search all bundles)</h3>
+
+By default you are only searching in the loaded bundles, you can however search in all bundles using three methods.
+
+<b>1. Load All Bundles</b>
+
+You can Load all bundles using the following methods:
+
+- use the tray many, select Load all bundles and bring up the search gui; or
+- bring up the search gui, choose the bundle menu, first option Load all bundles
+
+This has the disadvantage that it also sets the Locked state so next time you bring up the search gui you are searching in all bundles again and you have to unlock it.
+
+<b>2. Omnisearch query</b>
+
+If you start you query with a pre-defined character (@ by default) Lintalist will search in all bundles independent of the ones that are currently loaded or locked in the search Gui. You can define this character in the settings (OmniChar). If you don't want to use Omnisearch while typing a query simply disable it by erasing the Omnichar in the settings menu.
+
+Query: state -> will find "state" in the currently loaded bundle(s)
+Query: @state -> will find "state" in all bundles
+
+<b>3. Omnisearch shortcut</b>
+
+If you press <kbd>F2</kbd> you can toggle the Omnisearch
+
+Note: while using option 2 &amp; 3 the text "(All)" will be added to the statusbar (bottom right) to indicate you are using Omnisearch.
   
 <h2 id='Shortcuts'>Using <em>Shortcuts</em> (Hotkeys)</h2>
 

@@ -204,6 +204,8 @@ If !WinActive(AppWindow)
 Else
 	Gosub, ToggleView
 
+OmniSearch:=0
+
 Gui, 1:Destroy ; just to be sure
 Gui, 1:+Border -Resize +MinSize%Width%x%Height%
 Gui, 1:Menu, MenuBar
@@ -287,10 +289,16 @@ GuiControl,1: , Edit2, %A_Space% ; fix preview if no more snippets e.g. ghosting
 ; setup imagelist and define icons
 #Include %A_ScriptDir%\include\ImageList.ahk
 
-If (SubStr(CurrText,1,1) = OmniChar)
-	SearchBundles:=Group
+If (SubStr(CurrText,1,1) = OmniChar) or (OmniSearch = 1)
+	{
+	 SearchBundles:=Group
+	 OmniSearchText:=" (All)"
+	} 
 Else 
-	SearchBundles:=Load
+	{
+	 SearchBundles:=Load
+ 	 OmniSearchText:=""
+	}
 
 LastText:=CurrText
 GuiControlGet, Case, , Button2
@@ -374,13 +382,13 @@ Loop, parse, SearchBundles, CSV
 				 ShowPreviewToggle=0
 				}
 			 CurrHits:=LV_GetCount()
-			 SB_SetText(CurrHits "/" . ListTotal ,2) ; update status bar with hits / total
+			 SB_SetText(CurrHits "/" . ListTotal OmniSearchText,2) ; update status bar with hits / total
 			 If (CurrHits > MaxRes - 1)              ; stop search after Max results (takes to long anyway)
 			 	 Break
 		    }
 		}
 	 If (match = 0)
-		SB_SetText(LV_GetCount() "/" . ListTotal ,2) ; otherwise it won't show zero results
+		SB_SetText(LV_GetCount() "/" . ListTotal OmniSearchText,2) ; otherwise it won't show zero results
 	 
 	}
 
@@ -806,6 +814,12 @@ IfWinExist, Lintalist bundle editor
 	Gosub, 71GuiClose
 IfWinExist, Lintalist snippet editor
 	Gosub, 81GuiClose
+Return
+
+F2::
+OmniSearch:=!OmniSearch
+LastText=asdfADSDFGadsf
+Gosub, GetText
 Return
 
 F4:: ; edit snippet
