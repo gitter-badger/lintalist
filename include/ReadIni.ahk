@@ -31,6 +31,7 @@ INISetup:={ AlwaysLoadBundles:     {default:"",find:"bundles\"}
 			, MaxRes:              {default:"100"}
 			, SearchMethod:        {default:"1"}
 			, StartSearchHotkey:   {default:"Capslock",empty:"Capslock"}
+			, StartOmniSearchHotkey: {default:"^Capslock"}
 			, QuickSearchHotkey:   {default:"#z"}
 			, ExitProgramHotKey:   {default:"^#q"}
 			, CompactWidth:        {default:"450",min:"300"}
@@ -112,9 +113,6 @@ INISetup:={ AlwaysLoadBundles:     {default:"",find:"bundles\"}
 			ShowGrid =
 		Else
 			ShowGrid = Grid
-
-		If (OmniChar = "")
-			OmniChar:=Chr(7) ; just assign a character which you won't type
 
 	 ReadCountersIni()
 	}                         

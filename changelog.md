@@ -14,9 +14,11 @@
   properties now independent of snippet. Delete a bundle using the editor.  
   ht: @danielo515 https://github.com/lintalist/lintalist/issues/19 and  
   https://github.com/lintalist/lintalist/issues/28
-* New: Omnisearch - start search query with @ to search bundles regardless of  
-  loaded and/or locked bundles in search Gui.  
-  ht: @danielo515 https://github.com/lintalist/lintalist/issues/31
+* New: Omnisearch - start search query with @, press F2 while search or 
+  ctrl-capslock to search in all bundles regardless of loaded and/or locked  
+  bundles in search Gui.  
+  ht: @danielo515 https://github.com/lintalist/lintalist/issues/31  
+  http://lintalist.github.io/#Omni
 * Fix: Selected plugin, fixing issue with = in the text of wrap option caused error  
   https://github.com/lintalist/lintalist/issues/25  
   (does not properly solve nested plugins yet as discussed there).

@@ -153,6 +153,8 @@ Gosub, QuickStartGuide
 ; setup hotkey
 
 Hotkey, %StartSearchHotkey%, GUIStart
+If (StartOmniSearchHotkey <> "")
+	Hotkey, %StartOmniSearchHotkey%, GUIStartOmni
 If (QuickSearchHotkey <> "")
 	Hotkey, %QuickSearchHotkey%, ShortText
 If (ExitProgramHotKey <> "")
@@ -193,6 +195,8 @@ Return
 
 ; Here we build the Search Gui and fill it with content from the bundles and apply settings
 
+GUIStartOmni:
+OmniSearch:=1
 GuiStart: ; build GUI
 If WinActive("Select bundle") or WinActive("Append snippet to bundle") ; TODO replace by HOTKEY On,Off command
 		Return
@@ -203,8 +207,6 @@ If !WinActive(AppWindow)
 	GetActiveWindowStats()
 Else
 	Gosub, ToggleView
-
-OmniSearch:=0
 
 Gui, 1:Destroy ; just to be sure
 Gui, 1:+Border -Resize +MinSize%Width%x%Height%
@@ -620,6 +622,7 @@ Else If (Script <> "") and (ScriptPaused = 0) ; we run script by saving it to tm
 	}
 If (OnPaste = 1)
 	Gosub, SaveSettings
+OmniSearch:=0	
 Return
 
 CheckHitList(CheckHitList, CheckFor, Bundle, RE = 0) ; RE no longer needed?
@@ -1206,6 +1209,7 @@ CurrText=
 LastText=ladjflsajfasjflsdjlleiei
 ViaText=0
 ViaShorthand=0
+OmniSearch:=0
 Return
 
 ; for traymenu
@@ -1470,7 +1474,7 @@ Loop, parse, load, CSV
 	}
 StringTrimRight, MenuNames, MenuNames, 2
 SB_SetText(MenuNames,1) ; show active file in statusbar
-SB_SetText(ListTotal . "/" . ListTotal ,2) ; show hits / total
+SB_SetText(ListTotal . "/" . ListTotal OmniSearchText,2) ; show hits / total
 Return
 
 ; check if text to paste has any special parameters [[ClipCommands - you can write your own plugins see DOCs for more info
