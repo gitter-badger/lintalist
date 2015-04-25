@@ -21,7 +21,7 @@
 <span style='font-size:.8em;'>You can <b>extend Lintalist</b> by writing your own <b><a href='#InteractiveBundleText'>plugins</a></b>. Lintalist is open source and developed in <a href='http://ahkscript.org/'>AutoHotkey</a>, an easy to learn scripting language for Windows.
 [WinXP(sp3)/Vista/7/8]<br /></span>
 <span style='font-size:.8em;'>As of LintaList v1.1 several types of formatted text are supported in Snippets.</span>
-<span class='date' style='float:right;display:inline;margin-top:0px;'>doc rev. 20150314</span></p>
+<span class='date' style='float:right;display:inline;margin-top:0px;'>doc rev. 20150418</span></p>
 </div>
 
 <div class='column'>
@@ -68,7 +68,7 @@
 </div>
 
 <div class='column'>
-<p><b>Download Lintalist <em>1.5</em></b>
+<p><b>Download Lintalist <em>1.6</em></b>
 <p>
 <a href='https://github.com/lintalist/lintalist/releases'><img src='img/lintalist65x65.gif' alt='Download Lintalist' width='65' align='left' border='0' style='margin-right: 5px;' /></a>
 Download (incl. source):<br />
@@ -141,7 +141,7 @@ Installing Lintalist is easy, just download the ZIP file and unpack it in a fold
 If you are already an AutoHotkey user and have it installed, it is recommended to run <b>Lintalist.ahk</b>, this will ensure you will be running Lintalist with your preferred version of AutoHotkey. If you don't have AutoHotkey installed you can start <b>Lintalist.exe</b>.
 
 <b>Notes:</b>
-- Lintalist.exe: A renamed AutoHotkey.exe (v1.1.20.02 32-bit Unicode, See http://ahkscript.org/ and/or http://ahkscript.org/download/)
+- Lintalist.exe: A renamed AutoHotkey.exe (v1.1.21.03 32-bit Unicode, See http://ahkscript.org/ and/or http://ahkscript.org/download/)
 - Lintalist.ahk: The actual (main) source code of the program (see https://github.com/lintalist/lintalist)
 
 <h2 id='Searching'>Normal use: Starting Lintalist and searching for a Snippet</h2>
@@ -981,10 +981,10 @@ Start searching your bundle and select the snippet you want to edit (highlight w
 
 To store the modified snippet click the save button, the changes are immediately available.
 
-To modify the bundle properties such as the name, titlematch etc use Lintalist Bundle Editor.
+<span class='small'>Snippet editor</span>
+<img src='img/lintalist-snippet-editor.png' alt='Snippet editor' border='0'  style='max-width:100%;' />
 
-<span class='small'>Bundle editor</span>
-<img src='img/lintalist-bundle-editor.png' alt='Bundle editor' border='0'  style='max-width:100%;' />
+To modify the bundle properties such as the name, titlematch etc use <a href="#F10">Lintalist Bundle Editor</a>.
 
 <h3 id='F5'><span class='key'>F5</span> (Copy Snippet and Edit)</h3>
 
@@ -1039,12 +1039,14 @@ To add a new bundle (a collection of snippets) open the Lintalist search window 
 
 The most important fields are Name and TitleMatch. The name is used in the Bundle menu and can be displayed in the search results (see configuration) and the TitleMatch field will allow you to make a Bundle context sensitive which means the search, abbreviations and shortcuts will only be available in Windows which match the title you enter in the TitleMatch field.
 
-New bundles are stored in the bundle directory. Lintalis is restarted after you add a new bundle. A first snippet is automatically added when a new bundle is created.
+New bundles are stored in the bundle directory. Lintalist is restarted after you add a new bundle. A first snippet is automatically added when a new bundle is created.
 
 Once you have created a bundle you can add new snippets via the Edit, New snippet menu or press F7 - make sure the bundle is loaded first by seleting it via the Bundle menu in the Search window. You can add as many snippets as you like. Once ready do not forget to unlock the bundle by ticking the Lock check box in the Lintalist search window.
 
 An illustrated guide is available in the <a href="https://github.com/lintalist/lintalist/wiki/Adding-a-new-Bundle-using-Lintalist">Wiki</a>.
 
+<span class='small'>Bundle editor</span>
+<img src='img/lintalist-bundle-editor.png' alt='Bundle editor' border='0'  style='max-width:100%;' />
 
 <h3 id='BundleConvertors'>Bundle Converters</h3>
 

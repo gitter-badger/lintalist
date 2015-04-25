@@ -1,3 +1,12 @@
+### v1.6
+
+* New/Changed: improved plugin parsing so any type of nested snippets are now
+  allowed (used to be a limited set in a particular order)
+* New: Split & SplitLine plugins
+* New: Fall back on part2 of snippet it part1 happens to be empty
+  https://github.com/lintalist/lintalist/issues/36
+*   
+
 ### v1.5
 
 * New: Optional - Show bundle name in search results and/or use Colour to  
@@ -23,8 +32,7 @@
   https://github.com/lintalist/lintalist/issues/25  
   (does not properly solve nested plugins yet as discussed there).
 * Fix: Calendar plugin - added cancel option.
-* Fix: Update helper: Revised ZIP routine, Zip Class replaced with new version  
-  https://github.com/cocobelgica/AutoHotkey-ZipFile
+* Fix: Update helper: Revised routine.
 * Change: refactored ReadIni() code.
 * Change: in EditorMenuHandler now using Control, EditPaste for sending Plugin  
   to controls in Snippet editor (part 1 & part 2) - faster and more reliable.

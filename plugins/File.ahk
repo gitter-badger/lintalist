@@ -7,12 +7,13 @@ Version       : 1.0
 GetSnippetFile:
  	 Loop ; get Text from File
 		{
-		 If (InStr(Clip, "[[File=") = 0)
-			Break
-		 RegExMatch(Clip, "iU)\[\[File=([^[]*)\]\]", ClipQ, 1)
-		 FileRead, ClipQ2, %ClipQ1%
-		 StringReplace, clip, clip, [[File=%ClipQ1%]], %ClipQ2%
-		 ClipQ1=
-		 ClipQ2=
+         If (InStr(Clip, "[[File=") = 0) or (A_Index > 100)
+            Break
+		 FileRead, PluginSnippetFile, %PluginOptions%
+		 StringReplace, clip, clip, %PluginText%, %PluginSnippetFile%, All
+		 PluginSnippetFile:=""
+		 PluginOptions:=""
+		 PluginText:=""
+		 ProcessTextString:=""
 		}
 Return

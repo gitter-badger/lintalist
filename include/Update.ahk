@@ -35,6 +35,7 @@ SplitPath, A_ScriptDir, , LintalistFolder
 UnpackFolder:=LintalistFolder "\tmpscrpts"
 
 FileDelete, %UnpackFolder%\checkupdate.ini
+FileDelete, %UnpackFolder%\update.zip
 
 URLDownloadToFile, https://raw.githubusercontent.com/lintalist/lintalist/master/version.ini, %UnpackFolder%\checkupdate.ini
                    
@@ -116,6 +117,8 @@ WinClose, %LintalistFolder%\lintalist.ahk
 Sleep, 1000 
 
 FileRemoveDir, %UnpackFolder%\lintalist-master, 1
+FileDelete, %UnpackFolder%\checkupdate.ini
+FileDelete, %UnpackFolder%\update.zip
 
 Run, %LintalistFolder%\lintalist.ahk
 

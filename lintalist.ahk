@@ -4,7 +4,7 @@ Name            : Lintalist
 Author          : Lintalist
 Purpose         : Searchable interactive lists to copy & paste text, run scripts,
                   using easily exchangeable bundles
-Version         : 1.5
+Version         : 1.6
 Code            : https://github.com/lintalist/
 Website         : http://lintalist.github.io/
 AHKscript Forum : http://ahkscript.org/boards/viewtopic.php?f=6&t=3378
@@ -37,7 +37,7 @@ FileEncoding, UTF-8
 
 ; Title + Version are included in Title and used in #IfWinActive hotkeys and WinActivate
 Title=Lintalist
-Version=1.5
+Version=1.6
 
 ; ClipCommands are used in ProcessText and allow user input and other variable input into text snippets
 ; ClipCommands=[[Input,[[DateTime,[[Choice,[[Selected,[[Var,[[File,[[Snippet=
@@ -198,6 +198,7 @@ Return
 GUIStartOmni:
 OmniSearch:=1
 GuiStart: ; build GUI
+OmniSearchText:=""
 If WinActive("Select bundle") or WinActive("Append snippet to bundle") ; TODO replace by HOTKEY On,Off command
 		Return
 If (WinActive("Lintalist bundle editor") or WinActive("Lintalist snippet editor")) ; TODO replace by HOTKEY On,Off command
@@ -498,11 +499,11 @@ If (Script = "") or (ScriptPaused = 1) ; script is empty so we need to paste Tex
 		 StringReplace, Text1, Text1, [[Clipboard]], %Clipboard%, All
 		 StringReplace, Text2, Text2, [[Clipboard]], %Clipboard%, All
 		}
-	 If (InStr(Text1, "[[Clipboard=") > 0) or (InStr(Text2, "[[Clipboard=") > 0)
-		{ ; preprocess clipboard before inserting into snippet
-		 Text1:=ProcessClipboard(Text1)
-		 Text2:=ProcessClipboard(Text2)
-		}
+	 ;If (InStr(Text1, "[[Clipboard=") > 0) or (InStr(Text2, "[[Clipboard=") > 0)
+		;{ ; preprocess clipboard before inserting into snippet
+		; Text1:=ProcessClipboard(Text1)
+		; Text2:=ProcessClipboard(Text2)
+		;}
 	 If (PastText1 = 1) OR (Text2 = "")
 		Clip:=Text1
 	 Else If (PastText1 = 0) ; if shift-enter use Text2 BUT if it is empty revert to Text1
@@ -514,7 +515,6 @@ If (Script = "") or (ScriptPaused = 1) ; script is empty so we need to paste Tex
 		Clip:=Text2
 	 ClipSet("s",1,SendMethod,Clipboard) ; store in clip1
 	 ClearClipboard()
-	 Gosub, ProcessText
 	 ; process formatted text: HTML, Markdown, RTF and Image
 	 If RegExMatch(Clip,"iU)\[\[(html|md|rtf=.*|image=.*)\]\]")
 		{
@@ -523,29 +523,28 @@ If (Script = "") or (ScriptPaused = 1) ; script is empty so we need to paste Tex
 		 if InStr(Clip,"[[md]]")
 			{
 			 StringReplace,Clip,Clip,[[md]],,All
+			 Gosub, ProcessText
 			 Clip:=Markdown2HTML(Clip)
 			 Clip:=FixURI(Clip,"html",A_ScriptDir)
 			 WinClip.SetHTML(clip)
 			 Clip:=RegExReplace(clip,"iU)</*[^>]*>") ; strip HTML tags so we can paste normal text if need be
-			 CheckCursorPos()
 			 WinClip.SetText(Clip)
 			}
 		 else if InStr(Clip,"[[html]]")
 			{
 			 StringReplace,Clip,Clip,[[html]],,all
-			 Clip:=FixURI(Clip,"html",A_ScriptDir)
 			 Gosub, ProcessText
+			 Clip:=FixURI(Clip,"html",A_ScriptDir)
 			 WinClip.SetHTML(Clip)
 			 Clip:=RegExReplace(clip,"iU)</*[^>]*>") ; strip HTML tags so we can paste normal text if need be
-			 CheckCursorPos()
 			 WinClip.SetText(Clip)
 			}
 		 else if InStr(Clip,"[[rtf=")
 			{
 			 RegExMatch(Clip, "iU)\[\[rtf=([^[]*)\]\]", ClipQ, 1)
-			 ClipQ1:=FixURI(ClipQ1,"rtf",A_ScriptDir)
 			 FileRead,Clip,%ClipQ1%
 			 Gosub, ProcessText
+			 ClipQ1:=FixURI(ClipQ1,"rtf",A_ScriptDir)
 			 WinClip.SetRTF(Clip)
 			}
 		 else if InStr(Clip,"[[image=")
@@ -557,7 +556,10 @@ If (Script = "") or (ScriptPaused = 1) ; script is empty so we need to paste Tex
 		 Clip:="", ClipQ1:=""
 		}
 	 Else
-		Clipboard:=ClipSet("s",2,SendMethod,Clip) ; set clip2
+	 	{
+		 Gosub, ProcessText
+		 Clipboard:=ClipSet("s",2,SendMethod,Clip) ; set clip2
+	 	}
 	 If !(formatted > 0)  ; only check for ^| post if it is a plain text snippet
 	 	CheckCursorPos()
 	 formatted:=0
@@ -731,6 +733,9 @@ ShowPreview(Section="1")
 		 If (Snippet[Paste1,Paste2,2] = "")
 			Section = 1
 		}
+	 If (Snippet[Paste1,Paste2,1] = "") and (Snippet[Paste1,Paste2,2] <> "")
+			Section = 2
+		
 	 GuiControl,1: , Edit2, % Snippet[Paste1,Paste2,Section] ; set preview Edit control %
 	 Return
 	}
@@ -786,6 +791,12 @@ Return
 Esc::
 ;Gosub, 10GuiClose
 Gosub, CancelChoice
+Return
+#IfWinActive
+
+#IfWinActive, Calendar ahk_class AutoHotkeyGUI 
+Esc::
+Gosub, CalendarCancel
 Return
 #IfWinActive
 
@@ -1181,7 +1192,7 @@ If (MultipleHotkey=1) ; via hotkey
 	}
 Else If (MultipleHotkey=0) ; choice gui (see ProcessText label)
 	{
-	 StringReplace, Clip, Clip, [[Choice=%Clipq1%]], %Item%
+	 StringReplace, Clip, Clip, %PluginText%, %Item%, All
 	 Item=
 	 MultipleHotkey=0
 	 Gosub, ProcessText
@@ -1477,8 +1488,37 @@ SB_SetText(MenuNames,1) ; show active file in statusbar
 SB_SetText(ListTotal . "/" . ListTotal OmniSearchText,2) ; show hits / total
 Return
 
-; check if text to paste has any special parameters [[ClipCommands - you can write your own plugins see DOCs for more info
 ProcessText:
+
+	Loop ; get personal variables first... only exception from the plugins as it is a built-in feature with the local bundle editor as well
+		{
+		 ProcessTextString:=""
+		 LocalVarName:=""
+		 If (InStr(Clip, "[[Var=") = 0)
+			break
+		 ProcessTextString:=GrabPlugin(Clip,"var")
+		 LocalVarName:=RTrim(StrSplit(ProcessTextString,"=").2,"]")
+		 StringReplace, clip, clip, %ProcessTextString%, % LocalVar_%LocalVarName%, All ; %
+		}
+
+	ProcessTextString:=GrabPlugin(Clip)
+	Level:=CountString(ProcessTextString, "[[")
+	If (level > 1) ; grab inner or right most plugin
+		 PluginText:=GrabPlugin(ProcessTextString,,level)
+	else	 
+		PluginText:=ProcessTextString
+	 PluginName:=Trim(StrSplit(PluginText,"=").1,"[]")
+	 PluginOptions:=GrabPluginOptions(PluginText)
+	 If IsLabel("GetSnippet" PluginName)
+	 	Gosub, GetSnippet%PluginName%
+			
+	If (RegExMatch(Clip, "i)(" ClipCommandRE ")") > 0) ; make sure all "plugins" are processed before proceeding
+		Gosub, ProcessText
+
+Return
+
+; check if text to paste has any special parameters [[ClipCommands - you can write your own plugins see DOCs for more info
+ProcessText2:
 	Loop ; get personal variables first... only exception from the plugins as it is a built-in feature with the local bundle editor as well
 		{
 		 If (InStr(Clip, "[[Var=") = 0)
@@ -1746,6 +1786,7 @@ Return
 #Include %A_ScriptDir%\include\QuickStart.ahk
 #Include %A_ScriptDir%\include\FixURI.ahk
 #Include %A_ScriptDir%\include\SetIcon.ahk
+#Include %A_ScriptDir%\include\PluginHelper.ahk
 #Include %A_ScriptDir%\include\WinClip.ahk    ; by Deo
 #Include %A_ScriptDir%\include\WinClipAPI.ahk ; by Deo
 #Include %A_ScriptDir%\include\Markdown2HTML.ahk ; by fincs + additions
