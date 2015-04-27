@@ -12,7 +12,7 @@ GetSnippetCounter:
 			
 		 If (InStr(PluginOptions,"|"))
 			{
-			 CounterName:=StrSplit(PluginOptions,"|").1
+			 CounterName:=CheckforNewCounter(StrSplit(PluginOptions,"|").1)
 			 CounterMath:=StrSplit(PluginOptions,"|").2
 			 LocalCounter_%CounterName% := LocalCounter_%CounterName% + CounterMath
 			 If (CounterMath = 0)
@@ -28,11 +28,11 @@ GetSnippetCounter:
 			}
 		 Else
 			{
-			 CounterName:=PluginOptions
+			 CounterName:=CheckforNewCounter(PluginOptions)
 			 LocalCounter_%CounterName%++
 			 StringReplace, clip, clip, %PluginText%, % LocalCounter_%CounterName%
 			} 
-	
+
 		 CounterName:=""
 		 CounterMath:=""
  		 PluginOptions:=""
@@ -41,3 +41,13 @@ GetSnippetCounter:
 
 	  }
 Return
+
+CheckforNewCounter(in)
+	{
+	 global
+	 If InStr("," LocalCounter_0 ",", in)
+	 	Return in
+	 LocalCounter_0 .= in ","
+	 LocalCounter_%in% = 0
+	 Return in
+	}

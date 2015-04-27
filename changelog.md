@@ -5,7 +5,9 @@
 * New: Split & SplitLine plugins
 * New: Fall back on part2 of snippet it part1 happens to be empty
   https://github.com/lintalist/lintalist/issues/36
-*   
+* New: you can now create counters "on the fly" - if the name of a counter is
+  unknown it will be added automatically and saved in the settings. The start
+  value is 0 so when first using it the value used in the snippet will be 1
 
 ### v1.5
 

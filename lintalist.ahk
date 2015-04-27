@@ -1517,35 +1517,6 @@ ProcessText:
 
 Return
 
-; check if text to paste has any special parameters [[ClipCommands - you can write your own plugins see DOCs for more info
-ProcessText2:
-	Loop ; get personal variables first... only exception from the plugins as it is a built-in feature with the local bundle editor as well
-		{
-		 If (InStr(Clip, "[[Var=") = 0)
-			break
-		 RegExMatch(Clip, "iU)\[\[Var=([^[]*)\]\]", ClipQ, 1)
-		 StringReplace, clip, clip, [[Var=%ClipQ1%]], % LocalVar_%ClipQ1%, All ; %
-		}
-
-	 Loop, parse, ClipCommand, |
-		{
-		 If (A_LoopField = "")
-			Continue
-		 If InStr(Clip, A_LoopField)
-			{
-			 Filter:=SubStr(A_LoopField, 3)
-			 Gosub, GetSnippet%Filter%
-			}
-		 If (Filter = "Image")
-			Break
-		}
-
-
-If (RegExMatch(Clip, "i)(" ClipCommandRE ")") > 0) ; make sure all "plugins" are processed before proceeding
-	Gosub, ProcessText
-
-Return
-
 CheckCursorPos()
 	{
 	 Global BackLeft, BackUp
@@ -1712,6 +1683,8 @@ Menu, Plugins, Add, Insert [[Enc=]]     , EditorMenuHandler
 Menu, Plugins, Add, Insert [[File=]]    , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Input=]]   , EditorMenuHandler
 Menu, Plugins, Add, Insert [[Snippet=]] , EditorMenuHandler
+Menu, Plugins, Add, Insert [[Split=]]   , EditorMenuHandler
+Menu, Plugins, Add, Insert [[SplitLine=]] , EditorMenuHandler
 
 Menu, Plugins, Add
 
