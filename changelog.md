@@ -8,6 +8,7 @@
 * New: you can now create counters "on the fly" - if the name of a counter is
   unknown it will be added automatically and saved in the settings. The start
   value is 0 so when first using it the value used in the snippet will be 1
+  https://github.com/lintalist/lintalist/issues/26
 
 ### v1.5
 

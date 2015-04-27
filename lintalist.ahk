@@ -723,18 +723,21 @@ ShowPreview(Section="1")
 	 StringSplit, Paste, Paste, _
 	 If (Section = 3)
 		{
+		 Section = 5 ; 5 = actual script (array element)
 		 If (Snippet[Paste1,Paste2,5] = "") ;  if script is empty default to 2
 			Section = 2
-		 Else
-			Section = 5                     ; 5 = actual script (array element)
 		}
 	 If (Section = 2)
 		{
 		 If (Snippet[Paste1,Paste2,2] = "")
 			Section = 1
 		}
-	 If (Snippet[Paste1,Paste2,1] = "") and (Snippet[Paste1,Paste2,2] <> "")
+	 If (Section = 1)
+		{
+		 If (Snippet[Paste1,Paste2,1] = "")
 			Section = 2
+		}
+	 	
 		
 	 GuiControl,1: , Edit2, % Snippet[Paste1,Paste2,Section] ; set preview Edit control %
 	 Return
@@ -1487,6 +1490,7 @@ StringTrimRight, MenuNames, MenuNames, 2
 SB_SetText(MenuNames,1) ; show active file in statusbar
 SB_SetText(ListTotal . "/" . ListTotal OmniSearchText,2) ; show hits / total
 Return
+
 
 ProcessText:
 
