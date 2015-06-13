@@ -1,13 +1,13 @@
 ﻿/* 
-Plugin        : SplitLine [Standard Lintalist]
-Purpose       : Split each individual input into variables
+Plugin        : SplitRepeat [Standard Lintalist]
+Purpose       : Split input into variables and repeat snippet
 Version       : 1.0
 */
 
-GetSnippetSplitLine:
+GetSnippetSplitRepeat:
  	 Loop 
 		{
-		 If (InStr(Clip, "[[SplitLine=") = 0) or (A_Index > 100)
+		 If (InStr(Clip, "[[SplitRepeat=") = 0) or (A_Index > 100)
 			Break
          sp:={}
          spsingle:=""
@@ -25,11 +25,12 @@ GetSnippetSplitLine:
 			 ClearClipboard()
 			 Clipboard:=ClipSet("g",1,SendMethod) ; restore
 			}
-		 If CountString(PluginOptions,"|") > 1 ; multi
+		 If CountString(PluginOptions,"|") > 2 ; multi
 			{
-			 sprow:=SplitDelimiter(StrSplit(PluginOptions,"|").2)
-			 spcol:=SplitDelimiter(StrSplit(PluginOptions,"|").3)
-			 Loop, parse, % spwhat, `n
+			 sprepeat:=SplitDelimiter(StrSplit(PluginOptions,"|").2)
+			 sprow:=SplitDelimiter(StrSplit(PluginOptions,"|").3)
+			 spcol:=SplitDelimiter(StrSplit(PluginOptions,"|").4)
+			 Loop, parse, % spwhat, % sprepeat
 				{
 				 sp:={}
 				 spRowText:=clip
@@ -43,12 +44,13 @@ GetSnippetSplitLine:
 						 StringReplace, spRowText, spRowText, % "[[sp=" row "," A_Index "]]", % cell, All
 						} 
 					}
-				 spRowOutput .= spRowText "`n"
+				 spRowOutput .= spRowText
 				} 
 			}
 		 else ; single
 			{
-			 Loop, parse, % spwhat, `n
+			 sprepeat:=SplitDelimiter(StrSplit(PluginOptions,"|").2)	
+			 Loop, parse, % spwhat, % sprepeat
 				{
 				 sp:=StrSplit(A_LoopField,SplitDelimiter(StrSplit(PluginOptions,"|").2),"`r")
 				 spRowText:=clip
@@ -56,7 +58,7 @@ GetSnippetSplitLine:
 					{
 					 StringReplace, spRowText, spRowText, [[sp=%k%]], %v%, All
 					}
-				 spRowOutput .= spRowText "`n"
+				 spRowOutput .= spRowText
 				}	
 			}	
 		 clip:=RTrim(spRowOutput,"`n")
@@ -68,6 +70,7 @@ GetSnippetSplitLine:
 		 sprow:=""
 		 spcol:=""
 		 spwhat:=""
+		 sprepeat:=""
 		 PluginOptions:=""
 		 PluginText:=""
 		 ProcessTextString:=""
