@@ -33,8 +33,9 @@ Return
 #Include %A_ScriptDir%\plugins\counter.ahk     ; Counters
 #Include %A_ScriptDir%\plugins\calc.ahk        ; Math
 #Include %A_ScriptDir%\plugins\c.ahk           ; Character plugin
-#Include %A_ScriptDir%\plugins\split.ahk           ; Split plugin
-#Include %A_ScriptDir%\plugins\splitLine.ahk       ; Split plugin
+#Include %A_ScriptDir%\plugins\split.ahk       ; Split plugin
+#Include %A_ScriptDir%\plugins\SplitRepeat.ahk ; Split plugin
+;#Include %A_ScriptDir%\plugins\splitLine.ahk   ; Split plugin
 ;#Include %A_ScriptDir%\plugins\enc.ahk         ; Enc(rypt) plugin (decode)
 #Include %A_ScriptDir%\plugins\ClipSelExFunc.ahk
 

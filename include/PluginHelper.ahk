@@ -6,6 +6,7 @@
 ; See the ProcessText label in Lintalist.ahk
 ; GrabPlugin() v1
 
+; GrabPlugin is used for local variables only at the moment
 GrabPlugin(data,tag="",level="1")
 	{
 	 if (tag <> "")

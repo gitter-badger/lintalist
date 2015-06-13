@@ -46,7 +46,14 @@ Gosub, ReadPluginSettings
 AppWindow=%title% - %version%   ; Name of Gui
 GroupAdd, AppTitle, %AppWindow% ; we can now use #IfWinActive with the INI value (main scripts hotkeys)
 
+GroupAdd, BundleHotkeys, Select bundle ahk_class AutoHotkeyGUI
+GroupAdd, BundleHotkeys, Append snippet to bundle ahk_class AutoHotkeyGUI
+GroupAdd, BundleHotkeys, Lintalist bundle editor ahk_class AutoHotkeyGUI
+GroupAdd, BundleHotkeys, Lintalist snippet editor ahk_class AutoHotkeyGUI
+
 OnExit, SaveSettings ; store settings (locked state, search mode, gui size etc in INI + Make sure changes to Bundles are saved)
+
+
 
 ; /Default settings
 
@@ -199,10 +206,10 @@ GUIStartOmni:
 OmniSearch:=1
 GuiStart: ; build GUI
 OmniSearchText:=""
-If WinActive("Select bundle") or WinActive("Append snippet to bundle") ; TODO replace by HOTKEY On,Off command
-		Return
-If (WinActive("Lintalist bundle editor") or WinActive("Lintalist snippet editor")) ; TODO replace by HOTKEY On,Off command
-		Return
+;If WinActive("Select bundle") or WinActive("Append snippet to bundle") ; TODO replace by HOTKEY On,Off command
+;		Return
+;If (WinActive("Lintalist bundle editor") or WinActive("Lintalist snippet editor")) ; TODO replace by HOTKEY On,Off command
+;		Return
 LastText = fadsfSDFDFasdFdfsadfsadFDSFDf
 If !WinActive(AppWindow)
 	GetActiveWindowStats()
@@ -1505,12 +1512,8 @@ ProcessText:
 		 StringReplace, clip, clip, %ProcessTextString%, % LocalVar_%LocalVarName%, All ; %
 		}
 
-	ProcessTextString:=GrabPlugin(Clip)
-	Level:=CountString(ProcessTextString, "[[")
-	If (level > 1) ; grab inner or right most plugin
-		 PluginText:=GrabPlugin(ProcessTextString,,level)
-	else	 
-		PluginText:=ProcessTextString
+	 RegExMatch(clip,"iUs)\[\[[^\[]*\]\]",ProcessTextString)
+	 PluginText:=ProcessTextString
 	 PluginName:=Trim(StrSplit(PluginText,"=").1,"[]")
 	 PluginOptions:=GrabPluginOptions(PluginText)
 	 If IsLabel("GetSnippet" PluginName)

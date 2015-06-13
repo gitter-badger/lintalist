@@ -2,13 +2,18 @@
 
 * New/Changed: improved plugin parsing so any type of nested snippets are now
   allowed (used to be a limited set in a particular order)
-* New: Split & SplitLine plugins
+* New: Split & SplitRepeat plugins
 * New: Fall back on part2 of snippet it part1 happens to be empty
   https://github.com/lintalist/lintalist/issues/36
 * New: you can now create counters "on the fly" - if the name of a counter is
   unknown it will be added automatically and saved in the settings. The start
   value is 0 so when first using it the value used in the snippet will be 1
   https://github.com/lintalist/lintalist/issues/26
+* Editor/ObjectBundles: fix preview moved to function
+* Editor: new bundle now uses .insert vs .MaxIndex+1
+  hopefully fixes issue with "hidden" new snippet https://github.com/lintalist/lintalist/issues/37#issuecomment-108025595
+* Changed: made bundle hotkeys context sensitive to avoid them being used in Lintalist guis.
+  https://github.com/lintalist/lintalist/issues/38
 
 ### v1.5
 
